@@ -1,0 +1,25 @@
+[project]
+name = "layers"
+version = "0.1.0"
+description = "Exercise project to learn more about layers used in Deep Learning"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # Torch
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
+    "torchtyping",
+
+    # General science & ml
+    "numpy",
+    "scikit-learn",
+
+    # Utilities
+    #"tqdm",
+    #"rich",
+    #"ipython",
+    #"ipdb",
+    #"jupyterlab",
+    #"ipympl",
+    "pytest>=7.0.0",
+]
