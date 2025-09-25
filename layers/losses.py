@@ -37,7 +37,16 @@ class MSELoss(nn.Module):
         # 2. Validate that reduction is one of: 'mean', 'sum', 'none'
         # 3. Raise ValueError for invalid reduction types
         ##############################
-        raise NotImplementedError
+        if reduction !='sum' or reduction !='mean' or reduction !='none':
+            return ValueError
+        self.reduction = reduction
+        '''
+        if reduction 
+            return ValueError
+        self.reduction
+
+
+        '''
 
     def forward(self, predictions: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
         """
@@ -57,9 +66,15 @@ class MSELoss(nn.Module):
         # 1. Compute squared differences: (predictions - targets) ** 2
         # 2. Apply reduction: 'mean' -> .mean(), 'sum' -> .sum(), 'none' -> no reduction
         ##############################
-        raise NotImplementedError
+        difference = (predictions - targets) ** 2
+        if self.reduction == 'mean':
+            return difference.mean()
+        elif self.reduction == 'sum':
+            return difference.sum()
+        else:
+            return difference
 
-
+            
 class CrossEntropyLoss(nn.Module):
     """
     Cross Entropy Loss implementation for classification.
@@ -90,7 +105,11 @@ class CrossEntropyLoss(nn.Module):
         # 2. Validate reduction parameter
         # 3. ignore_index is used to ignore certain target values (like padding tokens)
         ##############################
-        raise NotImplementedError
+        if reduction != 'mean' or reduction !='sum' or reduction != 'none':
+            return ValueError
+
+        self.reduction = reduction
+        self.ignore_index = ignore_index
 
     def forward(self, predictions: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
         """
@@ -107,6 +126,24 @@ class CrossEntropyLoss(nn.Module):
         # YOUR CODE HERE
         #
         ##############################
+        '''
+        modified_target = torch.tensor(N, C).zeroes
+()
+        for row_index in range(N):
+            row = modified_target[row_index]
+            class_index = targets[row_index]
+            if class_index != self.ignore_index:
+                row[class_index] = -1
+
+        loss = predictions @ modified_target.t()
+        loss = predictions * modified_target
+        if self.reduction == 'mean':
+            return loss.mean()
+        else if self.reduction == 'sum':
+            reutrn loss.sum()
+        return loss
+        '''
+
         raise NotImplementedError
 
 
@@ -174,6 +211,13 @@ class BCEWithLogitsLoss(nn.Module):
         Input: (*) where * means any number of dimensions
         Target: (*) same shape as input, values should be 0 or 1
         Output: scalar if reduction is 'mean' or 'sum', otherwise same shape as input
+    
+    
+        Apply sigmoid   1/1+e^{-x}  then take a log of that 
+        then multiply it with class probabiltiy.
+
+        
+    
     """
 
     def __init__(

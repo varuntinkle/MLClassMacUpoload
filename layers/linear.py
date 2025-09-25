@@ -21,10 +21,29 @@ class LinearLayer(nn.Module):
         Output: (*, out_features) where * is the same as input
     """
 
+
+    '''
+
+    Verify if setting self.weight 
+    nn.Parameter(Tensort =(2,3)) just adding the deimsnsion is enogh.
+    '''
     def __init__(self, in_features: int, out_features: int, bias: bool = False):
         super().__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        #Add it
+        self.weight = nn.Parameter(Tensor=(out_features,
+                                           in_features), requires_grad=True)
+        nn.init.xavier_uniform_(self.weight)
 
-        ##############################
+
+        if bias:
+            self.bias = torch.tensor(1, out_features)
+            nn.init.xavier_uniform_(self.bias)
+
+
+
+        ########################
         # YOUR CODE HERE
         # Hints:
         # 1. Store in_features and out_features as instance variables
@@ -33,10 +52,7 @@ class LinearLayer(nn.Module):
         # 4. If bias=True, create bias parameter with shape (out_features,) and initialize to zeros
         # 5. Use torch.empty() to create uninitialized tensors, then fill them
         #
-        # Remember: nn.Parameter automatically registers tensors as learnable parameters
-
-        ##############################
-        raise NotImplementedError
+        # Remember: nn.Parameter automatically registers tensors as learnable parameters`t= - .......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................... .....0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000...............................................................................p`
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -47,19 +63,17 @@ class LinearLayer(nn.Module):
 
         Returns:
             Output tensor of shape (..., out_features)
+        
+        Varun
+        use batched matrix multiplementation
+        Verify ift here is a quick add function iun pytorc.  
+       output =  x @ weight 
+        if bias:
+        output = output + bias
         """
-
-        ##############################
-        # YOUR CODE HERE
-        # Hints:
-        # 1. Use a manual implementation, no torch.nn.functional.linear()
-        # 2. Don't forget to add bias if it exists
-        # 3. Make sure to handle the case when bias=False
-
-        ##############################
-        self.weight = None
-        self.bias = None
-        raise NotImplementedError
+        output =  x @ self.weight.t()
+        if self.bias:
+            output = output + self.bias
 
     def extra_repr(self) -> str:
         """
